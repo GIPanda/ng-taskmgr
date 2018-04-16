@@ -1,0 +1,17 @@
+<form>
+  <h3 mat-dialog-title>Invite member:</h3>
+  <div mat-dialog-content>
+    <mat-input-container>
+      <input matInput type="text" placeholder="member firstname" [matAutocomplete]="autoMembers">
+    </mat-input-container>
+  </div>
+  <div mat-dialog-actions>
+    <button type="button" mat-raised-button color="primary" (click)="onClick()">Save</button>
+    <button type="button" mat-dialog-close mat-button>Close</button>
+  </div>
+</form>
+<mat-autocomplete #autoMembers="matAutocomplete" [displayWith]="displayUser">
+  <mat-option *ngFor="let item of items" [value]="item" >
+    {{item.name}}
+  </mat-option>
+</mat-autocomplete>

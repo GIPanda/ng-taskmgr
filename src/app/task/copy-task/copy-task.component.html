@@ -1,0 +1,15 @@
+<form>
+  <h2 mat-dialog-title>Copy task content</h2>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <mat-select placeholder="Please select target task">
+        <mat-option *ngFor="let list of lists">{{list.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button type="button" mat-raised-button color="primary" (click)="onSave()">Save</button>
+    <button type="button" mat-button mat-dialog-close>Close</button>
+  </div>  
+</form>
+

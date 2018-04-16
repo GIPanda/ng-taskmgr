@@ -1,0 +1,11 @@
+.age-input{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.age-num mat-input-container{
+    width: 50px;
+    margin: 0 8px;
+}

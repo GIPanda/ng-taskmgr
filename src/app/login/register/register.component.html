@@ -1,0 +1,34 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm, $event)"> 
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sign up: </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-input-container class="full-width">
+        <input matInput type="text" placeholder="email" formControlName="email">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="text" placeholder="Nom" formControlName="name">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="password" placeholder="password" formControlName="password">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="password" placeholder="repeat your password" formControlName="pwd_repeat">
+      </mat-input-container>
+      <app-image-selector
+        [title] = "'Select avatar'"
+        [useSvgIcon] = "true"
+        [cols] = 6
+        [items] = "avatars"        
+        formControlName="avatar">
+      </app-image-selector>
+      <app-age-input formControlName="birthday"></app-age-input>
+      <button mat-raised-button color="primary" type="submit">Sign up</button>
+    </mat-card-content>
+    <mat-card-actions class="text-right">
+      <p><a href="#">Sign in</a></p>
+      <p><a href="#">Forgot password?</a></p>
+    </mat-card-actions>
+  </mat-card>
+</form>

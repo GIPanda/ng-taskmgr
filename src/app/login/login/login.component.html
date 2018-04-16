@@ -1,0 +1,36 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm,  $event)"> 
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sign in: </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-input-container class="full-width">
+        <input matInput type="text" placeholder="email" formControlName="email">
+      </mat-input-container>
+      <mat-input-container class="full-width">
+        <input matInput type="password" placeholder="password" formControlName="password">
+        <mat-error>{{ loginForm.controls['password'].errors | json }}</mat-error>        
+      </mat-input-container>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Sign in</button>
+    </mat-card-content>
+    <mat-card-actions class="text-right">
+      <p><a routerLink="/register">create account</a></p>
+      <p><a href="#">Forgot password?</a></p>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        One sentence a day
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{quote.cn}}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="quote.pic" alt="">
+    <mat-card-content>
+      {{quote.en}}
+    </mat-card-content>
+  </mat-card>
+</form>
