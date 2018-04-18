@@ -1,5 +1,12 @@
 import { Component, OnInit, forwardRef, OnDestroy, Input } from '@angular/core';
-import { FormGroup, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS,
+  FormControl,
+  FormBuilder
+} from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import {
   subDays,

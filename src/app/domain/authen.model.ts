@@ -5,5 +5,5 @@ export interface Authen {
     user?: User;
     userId?: string;
     token?: string;
-    err: Whoops;
+    err?: Whoops;
 }

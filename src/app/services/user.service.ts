@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Project } from '../domain';
+import { Project, User } from '../domain';
 import { Observable } from 'rxjs/Observable';
-import { User } from '../domain/user.model';
 
 @Injectable()
 export class UserService {

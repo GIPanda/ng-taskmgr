@@ -26,6 +26,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { DirectiveModule } from '../directive/directive.module';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
 import { AgeInputComponent } from './age-input/age-input.component';
+import { ChipListComponent } from './chip-list/chip-list.component';
 
 @NgModule({
   imports: [
@@ -80,6 +81,6 @@ import { AgeInputComponent } from './age-input/age-input.component';
     AgeInputComponent
   ],
   entryComponents: [ConfirmDialogComponent],
-  declarations: [ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent]
+  declarations: [ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent, ChipListComponent]
 })
 export class SharedModule { }
