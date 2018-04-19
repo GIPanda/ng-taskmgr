@@ -20,7 +20,8 @@ import {
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatChipsModule,
 } from '@angular/material';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DirectiveModule } from '../directive/directive.module';
@@ -52,7 +53,8 @@ import { ChipListComponent } from './chip-list/chip-list.component';
     MatSelectModule,
     MatSidenavModule,
     DirectiveModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatChipsModule
   ],
   exports: [
     CommonModule,
@@ -77,8 +79,10 @@ import { ChipListComponent } from './chip-list/chip-list.component';
     MatSelectModule,
     MatSidenavModule,
     DirectiveModule,
+    MatChipsModule,
     ImageSelectorComponent,
-    AgeInputComponent
+    AgeInputComponent,
+    ChipListComponent
   ],
   entryComponents: [ConfirmDialogComponent],
   declarations: [ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent, ChipListComponent]

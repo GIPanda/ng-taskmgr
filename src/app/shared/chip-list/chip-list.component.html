@@ -3,19 +3,19 @@
   <mat-chip-list>
     <mat-chip *ngFor="let member of members" selected="true" color="primary"
             removable="true" (remove)="removeMember(member)">
-      {{item.name}}
-      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      {{member.name}}
+      <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
   </mat-chip-list>
   <mat-input-container *ngIf="displayInput" class="full-width">
     <input type="text" 
     matInput 
     [placeholder]="placeholderText" 
-    [matAutoComplete]="candidateOptions" 
+    [matAutocomplete]="candidateOptions" 
     formControlName="memberSearch">
   </mat-input-container>
 </div>
-<mat-autocomplete #candidateOptions="matAutoComplete" [displayWith]="displayCandidates">
+<mat-autocomplete #candidateOptions="matAutocomplete" [displayWith]="displayCandidates">
   <mat-option *ngFor="let candidate of candidates$ | async"
     [value]="candidate"
     (onSelectionChange)="onCandidateSelect(candidate)">

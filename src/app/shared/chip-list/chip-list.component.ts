@@ -52,13 +52,13 @@ export class ChipListComponent implements OnInit, ControlValueAccessor {
   private propagateChange = (_: any) => {};
 
   writeValue(obj: any): void {
-    if (this.multiple) {
-      const userEntities = obj.reduce((e, c) => ({...e, c}), {});
+    if (obj && this.multiple) {
+      const userEntities = obj.reduce((a, c) => ({...a, c}), {});
       if (this.members) {
         const remaining = this.members.filter(member => !userEntities[member.id]);
         this.members = [...remaining, ...obj];
       }
-    } else {
+    } else if (obj && !this.multiple) {
       this.members = [...obj];
     }
   }
@@ -76,7 +76,7 @@ export class ChipListComponent implements OnInit, ControlValueAccessor {
   }
 
   removeMember(member: User) {
-    const i = this.members.map(item => item.id).indexOf(member.id);
+    const i = this.members.map(u => u.id).indexOf(member.id);
     if (this.multiple) {
       this.members = [...this.members.slice(0, i), ...this.members.slice(i + 1)];
     } else {
@@ -85,7 +85,7 @@ export class ChipListComponent implements OnInit, ControlValueAccessor {
   }
 
   onCandidateSelect(member: User) {
-    if (this.members.map(item => item.id).indexOf(member.id) === -1) {
+    if (this.members.map(u => u.id).indexOf(member.id) === -1) {
       this.members = this.multiple ? [...this.members, member] : [member];
       this.form.patchValue({memberSearch: member.name});
       this.propagateChange(this.members);
