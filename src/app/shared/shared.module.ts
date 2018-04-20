@@ -28,6 +28,8 @@ import { DirectiveModule } from '../directive/directive.module';
 import { ImageSelectorComponent } from './image-selector/image-selector.component';
 import { AgeInputComponent } from './age-input/age-input.component';
 import { ChipListComponent } from './chip-list/chip-list.component';
+import { IdentityInputComponent } from './identity-input/identity-input.component';
+import { AreaSelectorComponent } from './area-selector/area-selector.component';
 
 @NgModule({
   imports: [
@@ -85,6 +87,6 @@ import { ChipListComponent } from './chip-list/chip-list.component';
     ChipListComponent
   ],
   entryComponents: [ConfirmDialogComponent],
-  declarations: [ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent, ChipListComponent]
+  declarations: [ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent, ChipListComponent, IdentityInputComponent, AreaSelectorComponent]
 })
 export class SharedModule { }

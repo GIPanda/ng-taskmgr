@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, OnDestroy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, forwardRef, OnDestroy, Input } from '@angular/core';
 import {
   FormGroup,
   ControlValueAccessor,
@@ -51,7 +51,8 @@ export interface Age {
       useExisting: forwardRef(() => AgeInputComponent),
       multi: true
     }
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgeInputComponent implements OnInit, ControlValueAccessor, OnDestroy {
   @Input() dayMax = 90;
@@ -177,7 +178,6 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor, OnDestro
         birthFormInvalid: true
       };
     }
-
   }
 
   validateBirthday(c: FormControl): {[key: string]: any} {
