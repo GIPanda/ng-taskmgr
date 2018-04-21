@@ -83,7 +83,7 @@ export class IdentityInputComponent implements OnInit, OnDestroy, ControlValueAc
     return this._idNum.asObservable();
   }
 
-  writeValue(obj: any): void {
+  writeValue(obj: Identity): void {
     if (obj) {
       this.identity = obj;
     }
@@ -109,7 +109,7 @@ export class IdentityInputComponent implements OnInit, OnDestroy, ControlValueAc
         return this.validatePassport(c);
       case IdentityType.Insurance:
       default:
-        break;
+        return null;
     }
   }
 

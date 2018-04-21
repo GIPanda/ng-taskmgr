@@ -10,11 +10,7 @@ import { Quote } from '../../domain/quote.model';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  quote: Quote = {
-    cn: "被击垮通常只是暂时的，但如果你放弃的话，就会使它成为永恒。（Marilyn vos Savant）",
-    en: "Being defeated is often a temporary condition. Giving up is what makes it permanent.",
-    pic: "/assets/img/quotes/1.jpg"    
-  };
+  quote: Quote;
   constructor(private fb: FormBuilder, private quoteService$: QuoteService) { 
     this.quoteService$
       .getQuote()

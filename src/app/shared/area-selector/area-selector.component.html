@@ -1,3 +1,38 @@
-<p>
-  area-selector works!
-</p>
+<div class="address-group">
+  <mat-form-field>
+    <mat-select
+      placeholder="Province"
+      [(ngModel)]="_address.province"
+      (change)="onProvinceChange()">
+      <mat-option *ngFor="let p of provinces$ | async" [value]="p">
+        {{p}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      placeholder="City"
+      [(ngModel)]="_address.city"
+      (change)="onCityChange()">
+      <mat-option *ngFor="let c of cities$ | async" [value]="c">
+        {{c}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      placeholder="District"
+      [(ngModel)]="_address.district"
+      (change)="onDistrictChange()">
+      <mat-option *ngFor="let d of districts$ | async" [value]="d">
+        {{d}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="full-width street">
+    <input matInput type="text" placeholder="Street" 
+      [(ngModel)]="_address.street"
+      (change)="onStreetChange()">
+  </mat-form-field>
+</div>

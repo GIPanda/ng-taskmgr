@@ -22,6 +22,8 @@ import {
   MatSidenavModule,
   MatButtonToggleModule,
   MatChipsModule,
+  MatTabsModule,
+  MatFormFieldModule
 } from '@angular/material';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DirectiveModule } from '../directive/directive.module';
@@ -56,7 +58,9 @@ import { AreaSelectorComponent } from './area-selector/area-selector.component';
     MatSidenavModule,
     DirectiveModule,
     MatButtonToggleModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTabsModule,
+    MatFormFieldModule
   ],
   exports: [
     CommonModule,
@@ -82,11 +86,21 @@ import { AreaSelectorComponent } from './area-selector/area-selector.component';
     MatSidenavModule,
     DirectiveModule,
     MatChipsModule,
+    MatTabsModule,
+    MatFormFieldModule,
     ImageSelectorComponent,
     AgeInputComponent,
-    ChipListComponent
+    ChipListComponent,
+    IdentityInputComponent,
+    AreaSelectorComponent
   ],
   entryComponents: [ConfirmDialogComponent],
-  declarations: [ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent, ChipListComponent, IdentityInputComponent, AreaSelectorComponent]
+  declarations: [
+    ConfirmDialogComponent,
+    ImageSelectorComponent,
+    AgeInputComponent, ChipListComponent,
+    IdentityInputComponent,
+    AreaSelectorComponent
+  ]
 })
 export class SharedModule { }

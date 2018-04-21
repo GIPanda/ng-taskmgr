@@ -13,7 +13,7 @@ export interface Identity {
 
 export interface Address {
     province: string;
-    city; string;
+    city: string;
     district: string;
     street?: string;
 }
