@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { QuoteService } from '../../services/quote.service';
 import { Quote } from '../../domain/quote.model';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import * as reducers from '../../reducers';
+import * as quoteAction from '../../actions/quote.action';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +14,17 @@ import { Quote } from '../../domain/quote.model';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  quote: Quote;
-  constructor(private fb: FormBuilder, private quoteService$: QuoteService) { 
+  quote$: Observable<Quote>;
+  constructor(
+    private fb: FormBuilder,
+    private quoteService$: QuoteService,
+    private store$: Store<reducers.State>) {
+    this.quote$ = this.store$.select(reducers.getQuote);
     this.quoteService$
       .getQuote()
-      .subscribe(q => this.quote = q);
+      .subscribe(q => {
+        this.store$.dispatch(new quoteAction.LoadSuccess(q));
+      });
   }
 
   ngOnInit() {
@@ -32,25 +42,25 @@ export class LoginComponent implements OnInit {
   }
 
   validateEmail(c: FormControl): {[key: string]: any} {
-    if(!c.value) {
+    if (!c.value) {
       return null;
     }
 
     const pattern = /^patrick+/;
-    if(pattern.test(c.value)) {
-      return null
+    if (pattern.test(c.value)) {
+      return null;
     }else {
       return {
        emailNotValid: 'The emil must start with patrick'
       };
-    }    
+    }
   }
 
   validatePwd(c: FormControl): {[key: string]: any} {
-    if(c.value.length < 4){
+    if (c.value.length < 4) {
       return {
         pwdNotValid: 'Minimum 4 caractères'
-      }
+      };
     }
   }
 }

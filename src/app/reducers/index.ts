@@ -1,39 +1,66 @@
 import { NgModule } from '@angular/core';
-import { StoreModule, combineReducers, ActionReducer } from '@ngrx/store';
-import { RouterStoreModule } from '@ngrx/router-store';
+import { Params, RouterStateSnapshot } from '@angular/router';
+import { StoreModule, MetaReducer, ActionReducerMap} from '@ngrx/store';
+import {
+    StoreRouterConnectingModule,
+    routerReducer,
+    RouterReducerState,
+    RouterStateSerializer
+} from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeFreeze } from 'ngrx-store-freeze';
-import { compose } from '@ngrx/core/compose';
-
 import * as fromQuote from './quote.reducer';
 import { environment } from '../../environments/environment';
+import { createSelector } from 'reselect';
+
+export interface RouterStateUrl {
+    url: string;
+    params: Params;
+    queryParams: Params;
+  }
 
 export interface State {
+    router: RouterReducerState<RouterStateUrl>;
     quote: fromQuote.State;
 }
 
-const initialState: State = {
-    quote: fromQuote.initialState,
-};
+export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
+    serialize(routerState: RouterStateSnapshot): RouterStateUrl {
+      let route = routerState.root;
+      while (route.firstChild) {
+        route = route.firstChild;
+      }
+      const { url, root: { queryParams } } = routerState;
+      const { params } = route;
+      // Only return an object including the URL, params and query params
+      // instead of the entire snapshot
+      return { url, params, queryParams };
+    }
+  }
 
-const reducers = {
+const reducers: ActionReducerMap<State> = {
+    router: routerReducer,
     quote: fromQuote.reducer,
 };
 
-const prodReducers: ActionReducer<State> = combineReducers(reducers);
-const devReducers: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);
+export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 
-export function reducer(state = initialState, action: {type: string; payload: any} ): State {
-    return environment.production ?
-        prodReducers(state, action) : devReducers(state, action);
-}
+export const getQuoteState = (state: State) => state.quote;
+
+export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
 
 @NgModule({
     imports: [
-        StoreModule.provideStore(reducer),
-        RouterStoreModule.connectRouter(),
-        StoreDevtoolsModule.instrumentOnlyWithExtension(),
+        StoreModule.forRoot(reducers, {metaReducers, initialState: {
+            quote: fromQuote.initialState,
+        }}),
+        StoreRouterConnectingModule,
+        StoreDevtoolsModule.instrument({
+            maxAge: 5
+        })
     ],
-    providers: [],
+    providers: [
+        { provide: RouterStateSerializer, useClass: CustomSerializer }
+    ],
 })
 export class AppStoreModule {}

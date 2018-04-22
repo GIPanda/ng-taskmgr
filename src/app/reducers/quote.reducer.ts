@@ -13,14 +13,16 @@ export const initialState: State = {
     }
 };
 
-export function reducer(state = initialState, action: {type: string; payload: any } ): State {
+export function reducer(state = initialState, action: quoteAction.Actions ): State {
     switch (action.type) {
-        case quoteAction.QUOTE_SUCCESS: {
-            return {...state, quote: action.payload};
+        case quoteAction.ActionTypes.LOAD_SUCCESS: {
+            return {...state, quote: <Quote>action.payload};
         }
-        case quoteAction.QUOTE_FAIL:
+        case quoteAction.ActionTypes.LOAD_FAIL:
         default: {
             return state;
         }
     }
 }
+
+export const getQuote = (state: State) => state.quote;
