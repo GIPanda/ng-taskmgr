@@ -20,19 +20,18 @@ export class TaskHeaderComponent implements OnInit {
   }
 
   onNewTaskClick() {
-    console.log('hehehe');
     this.newTask.emit();
   }
 
-  onMoveAllClick(){
+  onMoveAllClick() {
     this.moveAll.emit();
   }
 
-  onListDeleteClick(){
+  onListDeleteClick() {
     this.deleteList.emit();
   }
 
-  onListEditClick(){
+  onListEditClick() {
     this.editList.emit();
   }
 }

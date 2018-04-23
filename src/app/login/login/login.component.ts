@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { QuoteService } from '../../services/quote.service';
 import { Quote } from '../../domain/quote.model';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
@@ -17,14 +16,9 @@ export class LoginComponent implements OnInit {
   quote$: Observable<Quote>;
   constructor(
     private fb: FormBuilder,
-    private quoteService$: QuoteService,
     private store$: Store<reducers.State>) {
     this.quote$ = this.store$.select(reducers.getQuote);
-    this.quoteService$
-      .getQuote()
-      .subscribe(q => {
-        this.store$.dispatch(new quoteAction.LoadSuccess(q));
-      });
+    this.store$.dispatch(new quoteAction.Load(null));
   }
 
   ngOnInit() {
@@ -36,8 +30,6 @@ export class LoginComponent implements OnInit {
 
   onSubmit({value, valid}, ev: Event) {
     ev.preventDefault();
-    console.log(JSON.stringify(value));
-    console.log(JSON.stringify(valid));
     this.loginForm.controls['password'].setValidators(this.validatePwd);
   }
 

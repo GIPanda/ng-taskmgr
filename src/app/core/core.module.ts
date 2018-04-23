@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { ServicesModule } from '../services/services.module';
 import { AppStoreModule } from '../reducers';
+import { AppEffectsModule } from '../effects';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -28,6 +29,7 @@ import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
 import '../utils/debug.util';
 
 @NgModule({
@@ -37,7 +39,8 @@ import '../utils/debug.util';
     BrowserAnimationsModule,
     AppRoutingModule,
     ServicesModule.forRoot(),
-    AppStoreModule
+    AppStoreModule,
+    AppEffectsModule
   ],
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
   exports: [

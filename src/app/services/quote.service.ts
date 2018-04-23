@@ -11,7 +11,6 @@ export class QuoteService {
     getQuote(): Observable<Quote> {
         const uri = `${environment.apiUrl}/quotes/${Math.floor(Math.random() * 10)}`;
         return this.http.get(uri)
-            .debug('quote: ')
             .map(res => res as Quote);
     }
 }
