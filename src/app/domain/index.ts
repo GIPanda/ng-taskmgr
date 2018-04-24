@@ -4,3 +4,4 @@ export * from './task-list.model';
 export * from './task.model';
 export * from './user.model';
 export * from './authen.model';
+export * from './whoops.model';

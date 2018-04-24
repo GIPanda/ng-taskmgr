@@ -171,7 +171,7 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor, OnDestro
 
   validate(c: FormControl): {[key: string]: any} {
     const val = c.value;
-    if (!val && isValidBirthday(val)) {
+    if (val && isValidBirthday(val)) {
       return null;
     } else {
       return {

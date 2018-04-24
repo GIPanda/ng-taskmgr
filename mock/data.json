@@ -55,7 +55,18 @@
       "roleIds": [
         1
       ]
-    }  
+    },
+    {
+      "email": "patrickliu1989@gmail.com",
+      "name": "Dongjie LIU",
+      "password": "test",
+      "pwd_repeat": "test",
+      "avatar": "avatars:svg-5",
+      "birthday": "1990-01-01",
+      "address": null,
+      "identity": null,
+      "id": "6OZqYdt"
+    }
   ],
   "projects": [
     {

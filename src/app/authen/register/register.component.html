@@ -25,12 +25,7 @@
             [items] = "avatars"        
             formControlName="avatar">
           </app-image-selector>
-          <button mat-raised-button color="primary" type="submit">Sign up</button>
         </mat-card-content>
-        <mat-card-actions class="text-right">
-          <p><a href="#">Sign in</a></p>
-          <p><a href="#">Forgot password?</a></p>
-        </mat-card-actions>
       </mat-tab>
       <mat-tab label="Personal details">
         <div class="full-width">
@@ -44,5 +39,10 @@
         </div>        
       </mat-tab>
     </mat-tab-group>
+    <button mat-raised-button color="primary" type="submit" >Sign up</button>      
+    <mat-card-actions class="text-right">
+        <p><a href="#">Sign in</a></p>
+        <p><a href="#">Forgot password?</a></p>
+      </mat-card-actions>    
   </mat-card>
 </form>

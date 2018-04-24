@@ -17,12 +17,11 @@ export class AuthenService {
   constructor (private http: HttpClient) {}
 
   register(user: User): Observable<Authen> {
-    user.id = null;
     const uri = `${environment.apiUrl}/${this.domain}`;
     return this.http
       .get(uri, {params: {email: user.email}})
       .switchMap(res => {
-        if (res) {
+        if (res[0]) {
           throw new Error('user existed');
         } else {
           return this.http
@@ -38,12 +37,12 @@ export class AuthenService {
       return this.http
         .get(uri, {params: {email: username, password: password}})
         .map( res => {
-          if (res) {
+          if (!res[0]) {
             throw new Error('username or password not match');
           } else {
             return {
               token: this.token,
-              user: res as User
+              user: res[0] as User
             };
           }
         });

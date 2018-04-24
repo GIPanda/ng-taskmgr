@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { getAddrByCode, isValidAddr, extractInfoFromIdentity } from '../../utils/identity.util';
 import { isValidBirthday } from '../../utils/date.util';
+import { Store } from '@ngrx/store';
+import * as reducers from '../../reducers';
+import * as authenActions from '../../actions/authen.action';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +19,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   identitySub: Subscription;
   private readonly avatarName = 'avatars';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private store$: Store<reducers.State> ) { }
 
   ngOnInit() {
     const img = `${this.avatarName}:svg-${Math.floor(Math.random() * 16).toFixed(0)}`;
@@ -38,10 +41,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .filter(_ => this.registerForm.get('identity').valid);
     this.identitySub = identity$.subscribe(identity => {
       const info = extractInfoFromIdentity(identity.number);
-      console.log(isValidAddr(info.addrCode));
       if (isValidAddr(info.addrCode)) {
         const addr = getAddrByCode(info.addrCode);
-      console.log(addr);
         this.registerForm.get('address').patchValue(addr);
       }
       if (isValidBirthday(info.birthday)) {
@@ -58,10 +59,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   onSubmit({value, valid}, ev: Event) {
     ev.preventDefault();
-    if (!valid) {
-      return;
+    if (valid) {
+      this.store$.dispatch(new authenActions.Register(value));
     }
-    console.log(value);
   }
 
 }
