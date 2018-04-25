@@ -15,6 +15,21 @@
   ],
   "users": [
     {
+      "password": "test",
+      "name": "Patrick LIU",
+      "avatar": "avatars:svg-4",
+      "email": "patrickliu1989@gmail.com",
+      "id": "27389e0c-df34-c261-71c4-ce75357e3035",
+      "projectIds": [
+        "Sk2HaTagb",
+        "Hya1moGb-"
+      ],
+      "roleIds": [
+        0,
+        1
+      ]
+    },    
+    {
       "password": "wp123456",
       "name": "Fan WANG",
       "avatar": "avatars:svg-1",
@@ -46,7 +61,7 @@
     {
       "password": "ldj123456",
       "name": "Dongjie LIU",
-      "avatar": "avatars:svg-2",
+      "avatar": "avatars:svg-3",
       "email": "dongjieliu@gmail.com",
       "id": "Sdfsdee-",
       "projectIds": [

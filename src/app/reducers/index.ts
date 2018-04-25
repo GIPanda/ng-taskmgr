@@ -11,6 +11,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromQuote from './quote.reducer';
 import * as fromAuthen from './authen.reducer';
+import * as fromProject from './project.reducer';
 import { environment } from '../../environments/environment';
 import { createSelector } from 'reselect';
 import { Authen } from '../domain';
@@ -39,26 +40,31 @@ export interface State {
   router: RouterReducerState<RouterStateUrl>;
   quote: fromQuote.State;
   authen: Authen;
+  project: fromProject.State;
 }
 
 const initialState: State = {
   router: null,
   quote: fromQuote.initialState,
-  authen: fromAuthen.initialState
+  authen: fromAuthen.initialState,
+  project: fromProject.initialState
 };
 
 const reducers: ActionReducerMap<State> = {
   router: routerReducer,
   quote: fromQuote.reducer,
-  authen: fromAuthen.reducer
+  authen: fromAuthen.reducer,
+  project: fromProject.reducer
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 
 export const getQuoteState = (state: State) => state.quote;
 export const getAuthenState = (state: State) => state.authen;
+export const getProjectState = (state: State) => state.project;
 
 export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
+export const getProjects = createSelector(getProjectState, fromProject.getAll);
 
 @NgModule({
   imports: [

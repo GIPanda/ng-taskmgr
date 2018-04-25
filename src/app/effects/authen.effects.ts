@@ -44,7 +44,10 @@ export class AuthenEffects {
   @Effect()
   logout$: Observable<Action> = this.actions$
     .ofType(actions.ActionTypes.LOGOUT)
-    .do(_ => this.router.navigate(['/']));
+    .mergeMap(action => {
+      this.router.navigate(['/']);
+      return Observable.empty();
+    });
 
   @Effect()
   afterLoginNavigate$: Observable<Action> = this.actions$

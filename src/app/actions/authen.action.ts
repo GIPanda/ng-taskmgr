@@ -42,7 +42,7 @@ export class LoginFail implements Action {
 export class Logout implements Action {
     readonly type = ActionTypes.LOGOUT;
 
-    constructor(public payload: Authen) { }
+    constructor(public payload: null) { }
 }
 
 export class Register implements Action {
