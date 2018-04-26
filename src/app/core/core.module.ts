@@ -24,6 +24,7 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/count';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/merge';
