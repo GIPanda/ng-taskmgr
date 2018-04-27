@@ -53,7 +53,7 @@ export class ProjectEffects {
     .ofType(actions.ActionTypes.SELECT)
     .map((action: actions.Select) => action.payload)
     .mergeMap((project: Project) => {
-      this.router.navigate([`/tasklists/${project.id}`]);
+      this.router.navigate([`/tasks/${project.id}`]);
       return Observable.empty();
     });
 
