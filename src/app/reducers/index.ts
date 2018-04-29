@@ -12,6 +12,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromQuote from './quote.reducer';
 import * as fromAuthen from './authen.reducer';
 import * as fromProject from './project.reducer';
+import * as fromTaskList from './task-list.reducer';
 import { environment } from '../../environments/environment';
 import { createSelector } from 'reselect';
 import { Authen } from '../domain';
@@ -41,20 +42,23 @@ export interface State {
   quote: fromQuote.State;
   authen: Authen;
   project: fromProject.State;
+  taskList: fromTaskList.State;
 }
 
 const initialState: State = {
   router: null,
   quote: fromQuote.initialState,
   authen: fromAuthen.initialState,
-  project: fromProject.initialState
+  project: fromProject.initialState,
+  taskList: fromTaskList.initialState
 };
 
 const reducers: ActionReducerMap<State> = {
   router: routerReducer,
   quote: fromQuote.reducer,
   authen: fromAuthen.reducer,
-  project: fromProject.reducer
+  project: fromProject.reducer,
+  taskList: fromTaskList.reducer,
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
@@ -62,9 +66,11 @@ export const metaReducers: MetaReducer<State>[] = !environment.production ? [sto
 export const getQuoteState = (state: State) => state.quote;
 export const getAuthenState = (state: State) => state.authen;
 export const getProjectState = (state: State) => state.project;
+export const getTaskListState = (state: State) => state.taskList;
 
 export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
 export const getProjects = createSelector(getProjectState, fromProject.getAll);
+export const getTaskLists = createSelector(getTaskListState, fromTaskList.getSelected);
 
 @NgModule({
   imports: [

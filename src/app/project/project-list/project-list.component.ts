@@ -70,6 +70,10 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       });
   }
 
+  selectProject(project: Project) {
+    this.store$.dispatch(new projectAction.Select(project));
+  }
+
   launchInviteDialog() {
     const dialogRef = this.dialog.open(InviteComponent, {data: {members: []}});
   }

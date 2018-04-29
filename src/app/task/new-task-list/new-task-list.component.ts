@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { NewTaskComponent } from '../new-task/new-task.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new-task-list',
@@ -9,21 +10,27 @@ import { NewTaskComponent } from '../new-task/new-task.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewTaskListComponent implements OnInit {
-  
   title = '';
+  form: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data, 
-    private dialogRef: MatDialogRef<NewTaskComponent>) { 
+    @Inject(MAT_DIALOG_DATA) private data,
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<NewTaskComponent>) {
 
   }
 
   ngOnInit() {
     this.title = this.data.title;
+    this.form = this.fb.group({
+      name: [this.data.taskList ? this.data.taskList.name : '', Validators.required]
+    });
   }
 
-  onClick() {
-    this.dialogRef.close(this.title);
+  onSubmit({value, valid}) {
+    if (valid) {
+      this.dialogRef.close(value);
+    }
   }
 
 }

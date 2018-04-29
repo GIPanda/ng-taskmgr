@@ -5,6 +5,12 @@ import { CopyTaskComponent } from '../copy-task/copy-task.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component';
 import { slideToRight } from '../../anims/router.anim';
+import { Store } from '@ngrx/store';
+import * as reducers from '../../reducers';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { TaskList } from '../../domain';
+import * as taskListAction from '../../actions/task-list.action';
 
 @Component({
   selector: 'app-task-home',
@@ -18,105 +24,65 @@ import { slideToRight } from '../../anims/router.anim';
 export class TaskHomeComponent implements OnInit {
 
   @HostBinding('@routeAnim') state;
+  projectId$: Observable<string>;
+  lists$: Observable<TaskList[]>;
 
-  lists:any = [
-    {
-      id: 1,
-      name: 'To do',
-      order: 1,
-      tasks: [
-        {
-          id: 1,
-          desc: 'Task 1: Buy coffee in starbucks',
-          completed: true,
-          priority: 3,
-          owner: {
-            id: 1,
-            name: 'Patrick',
-            avatar: 'avatars:svg-11'
-          },
-          dueDate: new Date(),
-          reminder: new Date()
-        },
-        {
-          id: 2,
-          desc: 'Task 2: Complete PPT',
-          completed: false, 
-          priority: 2,                   
-          owner: {
-            id: 1,
-            name: 'Eric',
-            avatar: 'avatars:svg-12'
-          },
-          dueDate: new Date(),
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Doing',
-      order: 2,
-      tasks: [
-        {
-          id: 1,
-          desc: 'Task 3: Code review',
-          completed: false, 
-          priority: 1,                   
-          owner: {
-            id: 1,
-            name: 'Stephanie',
-            avatar: 'avatars:svg-13'
-          },
-          dueDate: new Date(),
-        },
-        {
-          id: 2,
-          desc: 'Task 4: Project plan',
-          completed: false,
-          priority: 2,                 
-          owner: {
-            id: 1,
-            name: 'Eric',
-            avatar: 'avatars:svg-12'
-          },
-          dueDate: new Date(),
-        }
-      ]
+  constructor(
+    private dialog: MatDialog,
+    private store: Store<reducers.State>,
+    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef) {
+      this.projectId$ = this.route.paramMap.pluck('id');
+      this.lists$ = this.store.select(reducers.getTaskLists);
     }
-  ];
-
-  constructor(private dialog:MatDialog, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
 
-  launchNewTaskDialog(){
+  launchNewTaskDialog() {
     const dialogRef = this.dialog.open(NewTaskComponent, {data: {title: 'New task'}});
     this.cd.markForCheck();
   }
 
-  launchCopyTaskDialog(){
-    const dialogRef = this.dialog.open(CopyTaskComponent, {data: {lists: this.lists}});
+  launchCopyTaskDialog() {
+    // const dialogRef = this.dialog.open(CopyTaskComponent, {data: {lists: this.lists}});
   }
 
-  launchEditTaskDialog(task){
-    const dialogRef = this.dialog.open(NewTaskComponent, {data: {title: "Edit task", task: task}});
+  launchEditTaskDialog(task) {
+    const dialogRef = this.dialog.open(NewTaskComponent, {data: {title: 'Edit task', task: task}});
   }
 
-  launchConfirmDialog(){
+  launchConfirmDialog(list: TaskList) {
     const dialogRef = this.dialog.open(
       ConfirmDialogComponent,
       {data: {dark: true, title: 'Delete tasks', content: 'Are you sure to delete all tasks ?'}}
     );
-    dialogRef.afterClosed().subscribe(result => console.log(result));
+    dialogRef.afterClosed()
+      .take(1)
+      .filter(n => n)
+      .subscribe(result => this.store.dispatch(new taskListAction.Delete(list)));
   }
 
-  launchEditTaskListDialog(){
-    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: 'Edit task list'}});
+  launchEditTaskListDialog(list: TaskList) {
+    const dialogRef = this.dialog.open(
+      NewTaskListComponent,
+      {data: {title: 'Edit task list', taskList: list}}
+    );
+    dialogRef.afterClosed()
+      .take(1)
+      .subscribe(result =>
+        this.store.dispatch(new taskListAction.Update({...result, id: list.id}))
+      );
   }
 
-  launchNewTaskListDialog(){
-    const dialogRef = this.dialog.open(NewTaskListComponent, {data: {title: 'New task list'}});
+  launchNewTaskListDialog(ev: Event) {
+    const dialogRef = this.dialog.open(
+      NewTaskListComponent, {data: {title: 'New task list'}});
+      dialogRef.afterClosed()
+      .take(1)
+      .subscribe(result =>
+        this.store.dispatch(new taskListAction.Add(result))
+      );
   }
 
   handleMove(srcData, list) {
@@ -130,7 +96,7 @@ export class TaskHomeComponent implements OnInit {
         const tempOrder = srcList.order;
         srcList.order = list.order;
         list.order = tempOrder;
-        break;  
+        break;
       default:
         break;
     }

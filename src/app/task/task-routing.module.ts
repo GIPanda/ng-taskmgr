@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TaskHomeComponent } from './task-home/task-home.component';
 
 const routes: Routes = [
-    { path: 'tasks', component: TaskHomeComponent }
+    { path: 'projects/:id/tasks', component: TaskHomeComponent }
 ];
 
 @NgModule({

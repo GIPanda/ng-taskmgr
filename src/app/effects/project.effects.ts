@@ -7,6 +7,7 @@ import { ProjectService } from '../services/project.service';
 import * as actions from '../actions/project.action';
 import * as reducers from '../reducers';
 import { Project } from '../domain';
+import * as taskListAction from '../actions/task-list.action';
 
 @Injectable()
 export class ProjectEffects {
@@ -53,9 +54,15 @@ export class ProjectEffects {
     .ofType(actions.ActionTypes.SELECT)
     .map((action: actions.Select) => action.payload)
     .mergeMap((project: Project) => {
-      this.router.navigate([`/tasks/${project.id}`]);
+      this.router.navigate([`/projects/${project.id}/tasks`]);
       return Observable.empty();
     });
+
+  @Effect()
+  loadTaskLists$: Observable<Action> = this.actions$
+    .ofType(actions.ActionTypes.SELECT)
+    .map((action: actions.Select) => action.payload)
+    .map((project: Project) => new taskListAction.Load(project.id));
 
   @Effect()
   invite$: Observable<Action> = this.actions$

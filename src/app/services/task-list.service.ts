@@ -14,7 +14,6 @@ export class TaskListService {
 
     // POST
     add(taskList: TaskList): Observable<TaskList> {
-        taskList.id = null;
         const uri = `${environment.apiUrl}/${this.domain}`;
         return this.http
             .post(uri, JSON.stringify(taskList), {headers: this.headers})

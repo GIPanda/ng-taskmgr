@@ -13,6 +13,7 @@ export class ProjectItemComponent implements OnInit {
 
   @Input() item;
 
+  @Output() select = new EventEmitter<void>();
   @Output() invite = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
@@ -33,15 +34,22 @@ export class ProjectItemComponent implements OnInit {
     this.cardState = 'out';
   }
 
-  onInviteClick() {
+  onItemClick() {
+    this.select.emit();
+  }
+
+  onInviteClick(ev: Event) {
+    ev.stopPropagation();
     this.invite.emit();
   }
 
-  onEditClick() {
+  onEditClick(ev: Event) {
+    ev.stopPropagation();
     this.edit.emit();
   }
 
-  onDeleteClick() {
+  onDeleteClick(ev: Event) {
+    ev.stopPropagation();
     this.delete.emit();
   }
 }
