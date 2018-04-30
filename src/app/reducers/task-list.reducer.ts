@@ -22,7 +22,8 @@ const addTaskList = (state, action) => {
   } else {
     const newIds = [...state.ids, taskList.id];
     const newEntites = {...state.entities, [taskList.id]: taskList};
-    return {...state, ids: newIds, entities: newEntites};
+    const newSelectedIds = [...state.selectedIds, taskList.id];
+    return {...state, ids: newIds, entities: newEntites, selectedIds: newSelectedIds};
   }
 };
 
@@ -42,7 +43,7 @@ const deleteTaskList = (state, action) => {
   return {
     ids: newIds,
     entities: newEntites,
-    selectedIds: []
+    selectedIds: newSelectedIds
   };
 };
 
@@ -62,10 +63,11 @@ const deleteListsOfProject = (state, action) => {
   const remainingEntities = remainingIds.reduce(
     (entities, id) => ({...entities, [id]: state.entites[id]}), {}
   );
+  const selectedIds = _.difference(state.selectedIds, project.taskLists);
   return {
     ids: [...remainingIds],
     entities: remainingEntities,
-    selectedIds: []
+    selectedIds: [...selectedIds]
   };
 };
 
@@ -97,6 +99,7 @@ const loadTaskLists = (state, action) => {
     ...state,
     ids: [...state.ids, ...newIds],
     entities: {...state.entites, ...newEntites},
+    selectedIds: incomingIds
   };
 };
 

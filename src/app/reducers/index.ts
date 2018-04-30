@@ -13,6 +13,8 @@ import * as fromQuote from './quote.reducer';
 import * as fromAuthen from './authen.reducer';
 import * as fromProject from './project.reducer';
 import * as fromTaskList from './task-list.reducer';
+import * as fromTask from './task.reducer';
+import * as fromUser from './user.reducer';
 import { environment } from '../../environments/environment';
 import { createSelector } from 'reselect';
 import { Authen } from '../domain';
@@ -39,38 +41,76 @@ export class CustomSerializer implements RouterStateSerializer<RouterStateUrl> {
 
 export interface State {
   router: RouterReducerState<RouterStateUrl>;
-  quote: fromQuote.State;
+  quotes: fromQuote.State;
   authen: Authen;
-  project: fromProject.State;
-  taskList: fromTaskList.State;
+  projects: fromProject.State;
+  taskLists: fromTaskList.State;
+  tasks: fromTask.State;
+  users: fromUser.State;
 }
 
 const initialState: State = {
   router: null,
-  quote: fromQuote.initialState,
+  quotes: fromQuote.initialState,
   authen: fromAuthen.initialState,
-  project: fromProject.initialState,
-  taskList: fromTaskList.initialState
+  projects: fromProject.initialState,
+  taskLists: fromTaskList.initialState,
+  tasks: fromTask.initialState,
+  users: fromUser.initialState,
 };
 
 const reducers: ActionReducerMap<State> = {
   router: routerReducer,
-  quote: fromQuote.reducer,
+  quotes: fromQuote.reducer,
   authen: fromAuthen.reducer,
-  project: fromProject.reducer,
-  taskList: fromTaskList.reducer,
+  projects: fromProject.reducer,
+  taskLists: fromTaskList.reducer,
+  tasks: fromTask.reducer,
+  users: fromUser.reducer
 };
 
 export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
 
-export const getQuoteState = (state: State) => state.quote;
+export const getQuoteState = (state: State) => state.quotes;
 export const getAuthenState = (state: State) => state.authen;
-export const getProjectState = (state: State) => state.project;
-export const getTaskListState = (state: State) => state.taskList;
+export const getProjectState = (state: State) => state.projects;
+export const getTaskListState = (state: State) => state.taskLists;
+export const getTaskState = (state: State) => state.tasks;
+export const getUserState = (state: State) => state.users;
 
 export const getQuote = createSelector(getQuoteState, fromQuote.getQuote);
 export const getProjects = createSelector(getProjectState, fromProject.getAll);
 export const getTaskLists = createSelector(getTaskListState, fromTaskList.getSelected);
+export const getTasks = createSelector(getTaskState, fromTask.getTasks);
+export const getUsers = createSelector(getUserState, fromUser.getUsers);
+
+export const getUserEntities = createSelector(getUserState, fromUser.getEntities);
+export const getTasksUsers = createSelector(getTasks, getUserEntities, (tasks, userEntities) => {
+  return tasks.map(task => {
+    return {
+      ...task,
+      owner: userEntities[task.ownerId],
+      participants: task.participantIds.map(id => userEntities[id])
+    };
+  });
+});
+
+export const getTasksOfLists = createSelector(
+  getTaskLists, getTasksUsers, (lists, tasks) => {
+    return lists.map(list => {
+      return {
+        ... list,
+        tasks: tasks.filter(task => task.taskListId === list.id)
+      };
+    });
+  }
+);
+
+export const getProjectUsers = (projectId: string) => createSelector(
+  getProjectState, getUserEntities, (prjState, userEntities) => {
+    return prjState.entities[projectId].members.map(id => userEntities[id]);
+  }
+);
 
 @NgModule({
   imports: [
