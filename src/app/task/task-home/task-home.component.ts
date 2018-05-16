@@ -10,7 +10,8 @@ import * as reducers from '../../reducers';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { TaskList } from '../../domain';
-import * as taskListAction from '../../actions/task-list.action';
+import * as taskListActions from '../../actions/task-list.action';
+import * as taskActions from '../../actions/task.action';
 
 @Component({
   selector: 'app-task-home',
@@ -39,12 +40,18 @@ export class TaskHomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  launchNewTaskDialog() {
-    const dialogRef = this.dialog.open(NewTaskComponent, {data: {title: 'New task'}});
-    this.cd.markForCheck();
+  launchNewTaskDialog(list: TaskList) {
+    const user$ = this.store.select(reducers.getAuthenState).map(auth => auth.user);
+    user$.take(1)
+      .map(user => this.dialog.open(NewTaskComponent, {data: {title: 'New task', owner: user}}))
+      .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+      .subscribe(res => this.store.dispatch(
+        new taskActions.Add({...res, taskListId: list, completed: false, createDate: new Date()})
+      ));
+    // this.cd.markForCheck();
   }
 
-  launchCopyTaskDialog() {
+  launchCopyTaskDialog(list: TaskList) {
     // const dialogRef = this.dialog.open(CopyTaskComponent, {data: {lists: this.lists}});
   }
 
@@ -60,7 +67,7 @@ export class TaskHomeComponent implements OnInit {
     dialogRef.afterClosed()
       .take(1)
       .filter(n => n)
-      .subscribe(result => this.store.dispatch(new taskListAction.Delete(list)));
+      .subscribe(result => this.store.dispatch(new taskListActions.Delete(list)));
   }
 
   launchEditTaskListDialog(list: TaskList) {
@@ -71,7 +78,7 @@ export class TaskHomeComponent implements OnInit {
     dialogRef.afterClosed()
       .take(1)
       .subscribe(result =>
-        this.store.dispatch(new taskListAction.Update({...result, id: list.id}))
+        this.store.dispatch(new taskListActions.Update({...result, id: list.id}))
       );
   }
 
@@ -81,7 +88,7 @@ export class TaskHomeComponent implements OnInit {
       dialogRef.afterClosed()
       .take(1)
       .subscribe(result =>
-        this.store.dispatch(new taskListAction.Add(result))
+        this.store.dispatch(new taskListActions.Add(result))
       );
   }
 

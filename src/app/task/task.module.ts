@@ -9,13 +9,23 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import { CopyTaskComponent } from './copy-task/copy-task.component';
 import { NewTaskListComponent } from './new-task-list/new-task-list.component';
 import { QuickTaskComponent } from './quick-task/quick-task.component';
+import { ChipListComponent } from '../shared/chip-list/chip-list.component';
 
 @NgModule({
   imports: [
     SharedModule,
     TaskRoutingModule
   ],
-  declarations: [TaskHomeComponent, TaskListComponent, TaskItemComponent, TaskHeaderComponent, NewTaskComponent, CopyTaskComponent, NewTaskListComponent, QuickTaskComponent],
+  declarations: [
+    TaskHomeComponent,
+    TaskListComponent,
+    TaskItemComponent,
+    TaskHeaderComponent,
+    NewTaskComponent,
+    CopyTaskComponent,
+    NewTaskListComponent,
+    QuickTaskComponent,
+  ],
   entryComponents: [
     NewTaskComponent,
     NewTaskListComponent,

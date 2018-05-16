@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import * as reducers from '../../reducers';
 import { Observable } from 'rxjs/Observable';
-import * as projectAction from '../../actions/project.action';
+import * as projectActions from '../../actions/project.action';
 
 @Component({
   selector: 'app-project-list',
@@ -41,7 +41,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     private projectService: ProjectService,
     private store$: Store<reducers.State>
   ) {
-    this.store$.dispatch(new projectAction.Load(null));
+    this.store$.dispatch(new projectActions.Load(null));
     this.projects$ = this.store$.select(reducers.getProjects);
     this.listAnim$ = this.projects$.map(p => p.length);
   }
@@ -66,16 +66,19 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .take(1)
       .filter(n => n)
       .subscribe(project => {
-        this.store$.dispatch(new projectAction.Add(project));
+        this.store$.dispatch(new projectActions.Add(project));
       });
   }
 
   selectProject(project: Project) {
-    this.store$.dispatch(new projectAction.Select(project));
+    this.store$.dispatch(new projectActions.Select(project));
   }
 
-  launchInviteDialog() {
-    const dialogRef = this.dialog.open(InviteComponent, {data: {members: []}});
+  launchInviteDialog(project: Project) {
+    this.store$.select(reducers.getProjectUsers(project.id))
+      .map(users => this.dialog.open(InviteComponent, {data: {members: users}}))
+      .switchMap(dialogRef => dialogRef.afterClosed().take(1).filter(n => n))
+      .subscribe(res => this.store$.dispatch(new projectActions.Invite({projectId: project.id, members: res})));
   }
 
   launchUpdateDialog(project: Project) {
@@ -92,7 +95,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         .filter(n => n)
         .map(val => ({ ...val, id: project.id, coverImg: this.getImg4Thumb(val.coverImg) }))
         .subscribe(prj => {
-          this.store$.dispatch(new projectAction.Update(prj));
+          this.store$.dispatch(new projectActions.Update(prj));
         });
 
   }
@@ -106,7 +109,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       .take(1)
       .filter(n => n)
       .subscribe(() => {
-        this.store$.dispatch(new projectAction.Delete(project));
+        this.store$.dispatch(new projectActions.Delete(project));
       });
   }
 

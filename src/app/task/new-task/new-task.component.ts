@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new-task',
@@ -8,7 +9,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewTaskComponent implements OnInit {
-  title: string = '';
+  title = '';
   priorities = [
     {
       label: 'Emergent',
@@ -21,15 +22,37 @@ export class NewTaskComponent implements OnInit {
     {
       label: 'Normal',
       value: 3
-    }        
+    }
   ];
-  constructor(@Inject(MAT_DIALOG_DATA) private data) {
-    
-  }
+  form: FormGroup;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data,
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<NewTaskComponent>
+  ) {}
 
   ngOnInit() {
     this.title = this.data.title;
-    console.log(JSON.stringify(this.data.task));
+    this.form = this.fb.group({
+      desc: [this.data.task ? this.data.task.desc : '', Validators.required],
+      priority: [this.data.task ? this.data.task.priority : 3, Validators.required],
+      owner: [this.data.task ? [this.data.task.owner] : [this.data.owner]],
+      participants: [this.data.task ? [...this.data.task.participants] : []],
+      dueDate: [this.data.task ? this.data.task.dueDate : ''],
+      reminder: [this.data.task ? this.data.task.reminder : ''],
+      remark: [this.data.task ? this.data.task.remark : ''],
+    });
+  }
+
+  onSubmit(ev: Event, {value, valid}) {
+    ev.preventDefault();
+    if (valid) {
+      this.dialogRef.close({
+        ...value,
+        ownerId: value.owner.length > 0 ? value.owner[0].id : null,
+        participantIds: value.participants.map(p => p.id)
+      });
+    }
   }
 
 }

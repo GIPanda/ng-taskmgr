@@ -41,7 +41,7 @@ export class ProjectService {
         .mergeMap(listId => this.http.delete(`${environment.apiUrl}/taskLists/${listId}`))
         .count();
       return delTasks$
-        .switchMap(_ => this.http.delete(`${environment.apiUrl}/${this.domain}/${project.id}`))
+        .switchMap( () => this.http.delete(`${environment.apiUrl}/${this.domain}/${project.id}`))
         .mapTo(project);
     }
 
@@ -50,6 +50,7 @@ export class ProjectService {
       const uri = `${environment.apiUrl}/${this.domain}`;
       return this.http
         .get(uri, {params: {members_like: userId}})
+        .debug(p => console.log(p))
         .map(res => res as Project[]);
     }
 

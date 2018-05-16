@@ -4,6 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { Router } from '@angular/router';
 import * as actions from '../actions/task-list.action';
+import * as taskActions from '../actions/task.action';
 import * as reducers from '../reducers';
 import { TaskList } from '../domain';
 import { TaskListService } from '../services/task-list.service';
@@ -48,8 +49,13 @@ export class TaskListEffects {
     .ofType(actions.ActionTypes.SWAP)
     .map((action: actions.Swap) => action.payload)
     .switchMap(({src, target}) => this.service$.swapOrder(src, target))
-    .map(res => new actions.SwapSuccess(res))
-    .catch(err => Observable.of(new actions.SwapFail(err)));
+    .map(res => new actions.SwapSuccess(res));
+
+  @Effect()
+  loadTasks$: Observable<Action> = this.actions$
+    .ofType(actions.ActionTypes.LOAD_SUCCESS)
+    .map((action: actions.LoadSuccess) => action.payload)
+    .map((lists: TaskList[]) => new taskActions.Load(lists));
 
   constructor(
     private actions$: Actions,
