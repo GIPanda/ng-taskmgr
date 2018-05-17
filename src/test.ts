@@ -11,6 +11,9 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+/* tslint:disable:import-blacklist */
+import 'rxjs/Rx';
+/* tslint:enable:import-blacklist */
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;

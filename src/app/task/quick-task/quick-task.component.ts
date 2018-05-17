@@ -23,7 +23,7 @@ export class QuickTaskComponent implements OnInit {
 
   @HostListener('keyup.enter')
   sendQuickTask() {
-    if( !this.desc || this.desc.length === 0 || !this.desc.trim()) {
+    if ( !this.desc || this.desc.length === 0 || !this.desc.trim()) {
       return;
     }
     this.quickTask.emit(this.desc);

@@ -11,7 +11,7 @@ export class AppComponent {
 
   constructor(
     private oc: OverlayContainer,
-    @Inject('BASE_CONFIG') config){
+    @Inject('BASE_CONFIG') config) {
   }
 
   switchTheme(dark) {

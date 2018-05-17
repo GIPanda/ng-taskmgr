@@ -50,7 +50,6 @@ export class ProjectService {
       const uri = `${environment.apiUrl}/${this.domain}`;
       return this.http
         .get(uri, {params: {members_like: userId}})
-        .debug(p => console.log(p))
         .map(res => res as Project[]);
     }
 

@@ -17,8 +17,12 @@ const addUser = (state, action) => {
   const user = <User> action.payload;
   const newIds = [...state.ids, user.id];
   const newEntites = {...state.entities, [user.id]: user};
-  return state.entites[user.id] ?
-    {...state, entites: newEntites} : {...state, ids: newIds, entites: newEntites};
+  if (state.entities[user.id]) {
+    return {...state, entites: newEntites};
+  } else {
+    return {...state, ids: newIds, entites: newEntites};
+  }
+
 };
 
 const updateUser = (state, action) => {

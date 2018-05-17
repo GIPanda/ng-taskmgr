@@ -17,7 +17,7 @@ export class ProjectEffects {
   loadProjects$: Observable<Action> = this.actions$
     .ofType(actions.ActionTypes.LOAD)
     .withLatestFrom(this.store$.select(reducers.getAuthenState))
-    .switchMap(([_, authen]) => this.service$.get(authen.userId))
+    .switchMap(([_, authen]) => this.service$.get(authen.user.id))
     .map(projects => new actions.LoadSuccess(projects))
     .catch(err => Observable.of(new actions.LoadFail(err)));
 
