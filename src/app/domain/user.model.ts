@@ -23,8 +23,8 @@ export interface User {
     email: string;
     password: string;
     name: string;
-    avatar: string;
-    projectIds: string[];
+    avatar?: string;
+    projectIds?: string[];
     address?: Address;
     Identity?: Identity;
     birthday?: string;
