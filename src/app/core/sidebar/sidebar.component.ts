@@ -7,7 +7,7 @@ import { getDate } from 'date-fns';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  
+
   @Output() navClick = new EventEmitter<void>();
   today = 'day';
 
@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
     this.today = `day${getDate(new Date())}`;
   }
 
-  onNavClick(){
+  onNavClick() {
     this.navClick.emit();
   }
 

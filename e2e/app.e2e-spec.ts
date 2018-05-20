@@ -1,4 +1,11 @@
 import { AppPage } from './app.po';
+import { createWriteStream } from 'fs';
+
+function writeScreenShot(data, filename) {
+  const stream = createWriteStream(filename);
+  stream.write(new Buffer(data, 'base64'));
+  stream.end();
+}
 
 describe('ng-taskmgr App', () => {
   let page: AppPage;
@@ -7,8 +14,9 @@ describe('ng-taskmgr App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display app name', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    page.fillInfo().then(result => writeScreenShot(result, 'screenshots/sc001.jpg'));
+    expect(page.getParagraphText()).toContain('Enterprise Collaboration Platform');
   });
 });
