@@ -79,4 +79,11 @@ export class TaskService {
             .mergeMap(task => this.move(task.id, targetListId))
             .reduce((accumTasks, seedTask) => [...accumTasks, seedTask], []);
     }
+
+    getUserTasks(userId: string): Observable<Task[]> {
+        const uri = `${environment.apiUrl}/${this.domain}`;
+        return this.http
+            .get(uri, {params: {ownerId: userId}})
+            .map(res => res as Task[]);
+    }
 }

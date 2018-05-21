@@ -19,7 +19,7 @@ export class AuthenGuardService implements CanActivate {
     return this.store$
       .select(reducers.getAuthenState)
       .map(authen => {
-          if (authen.token) {
+          if (!authen.token) {
               this.router.navigate(['/login']);
           }
           return authen.token ? true : false;

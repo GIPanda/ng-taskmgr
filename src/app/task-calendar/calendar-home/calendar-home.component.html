@@ -1,0 +1,44 @@
+<mat-card>
+  <div class="toolbar">
+    <button mat-icon-button 
+      mwlCalendarPreviousView
+      [view]="view$ | async"
+      [(viewDate)]="viewDate">
+      <mat-icon class="mat-48">chevron_left</mat-icon>
+    </button>
+    <button mat-button 
+      mwlCalendarToday
+      [(viewDate)]="viewDate">
+      {{ viewDate | date: 'dd/MM/yyy' }}
+    </button>
+    <button mat-icon-button 
+      mwlCalendarNextView
+      [view]="view$ | async"
+      [(viewDate)]="viewDate">
+      <mat-icon class="mat-48">chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <ng-container *ngIf="(events$ | async) as calEvents">
+    <div [ngSwitch]="view$ | async">
+      <mwl-calendar-week-view 
+        *ngSwitchCase="'week'"
+        [viewDate]="viewDate"
+        [events]="calEvents"
+        (eventClicked)="handleEvent($event.event)">    
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view 
+        *ngSwitchCase="'day'"
+        [viewDate]="viewDate"
+        [events]="calEvents"
+        (eventClicked)="handleEvent($event.event)">    
+      </mwl-calendar-day-view>
+      <mwl-calendar-month-view 
+        *ngSwitchDefault
+        [viewDate]="viewDate"
+        [events]="calEvents"
+        (eventClicked)="handleEvent($event.event)">    
+      </mwl-calendar-month-view>    
+    </div>      
+  </ng-container>
+</mat-card>

@@ -33,7 +33,7 @@ export class TaskHomeComponent implements OnInit {
     private store: Store<reducers.State>,
     private route: ActivatedRoute,
     private cd: ChangeDetectorRef) {
-      this.projectId$ = this.route.paramMap.pluck('id');
+      this.projectId$ = this.route.paramMap.map(p => p.get('id'));
       this.lists$ = this.store.select(reducers.getTasksOfLists);
     }
 
@@ -85,6 +85,7 @@ export class TaskHomeComponent implements OnInit {
     );
     dialogRef.afterClosed()
       .take(1)
+      .withLatestFrom(this.projectId$, (val, projectId) => ({...val, projectId: projectId}))
       .subscribe(result =>
         this.store.dispatch(new taskListActions.Update({...result, id: list.id}))
       );
